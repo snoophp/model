@@ -802,15 +802,16 @@ class Column
 	/**
 	 * Make foreign key
 	 * 
-	 * @param string		$table		name of foreign table
+	 * @param string		$model		model or name of foreign table
 	 * @param string		$column		name of foreign column
 	 * @param string|null	$onDelete	on delete option
 	 * @param string|null	$onUpdate	on update option
 	 * 
 	 * @return Column
 	 */
-	public function references($table, $column, $onDelete = "no action", $onUpdate = "no action")
+	public function references($model, $column, $onDelete = "no action", $onUpdate = "no action")
 	{
+		$table = class_exists($model) ? $model::tableName() : $model;
 		return $this->set("foreign", [
 			"table"		=> $table,
 			"column"	=> $column,
@@ -824,14 +825,15 @@ class Column
 	 * 
 	 * @param string		$column		name of foreign column
 	 * @param bool			$closeChain close composite chain
-	 * @param string		$table		name of foreign table
+	 * @param string		$model		model or name of foreign table
 	 * @param string|null	$onDelete	on delete option
 	 * @param string|null	$onUpdate	on update option
 	 * 
 	 * @return Column
 	 */
-	public function referencesComposite($column, $closeChain = false, $table = "table", $onDelete = "no action", $onUpdate = "no action")
+	public function referencesComposite($column, $closeChain = false, $model = "table", $onDelete = "no action", $onUpdate = "no action")
 	{
+		$table = class_exists($model) ? $model::tableName() : $model;
 		return $this->set("foreignComposite", [
 			"closeChain"	=> $closeChain,
 			"table"			=> $table,
